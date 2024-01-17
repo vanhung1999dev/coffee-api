@@ -1,9 +1,13 @@
 DB_DOCKER_CONTAINER=coffee_db
 BINARY_NAME=coffeeapi
+POSTGRES_VOLUME=postgresDb
+
+volume:
+	docker volume create ${POSTGRES_VOLUME}
 
 postgres:
 	docker rm -f ${DB_DOCKER_CONTAINER}
-	docker run --name ${DB_DOCKER_CONTAINER} -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=1234 -d postgres:12-alpine
+	docker run --name ${DB_DOCKER_CONTAINER} -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=1234 -v ${POSTGRES_VOLUME}:/var/lib/postgresql/data -d postgres:12-alpine
 
 start_docker:
 	docker start ${DB_DOCKER_CONTAINER}
